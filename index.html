@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGINX &amp; Jenkins Practice Site</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 720px;
+            margin: 50px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+        .card {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9fafb;
+            margin-top: 20px;
+        }
+        code {
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>NGINX Practice Website — Build v1</h1>
+    <p>Deployed via Git and Jenkins onto Linux.</p>
+
+    <div class="card">
+        <strong>Deployment Verification</strong>
+        <p>Requested Path: <code id="path"></code></p>
+        <p>Page Loaded At: <code id="loaded-at"></code></p>
+    </div>
+
+    <script>
+        document.getElementById("path").textContent = window.location.pathname;
+        document.getElementById("loaded-at").textContent = new Date().toISOString();
+    </script>
+</body>
+</html>
