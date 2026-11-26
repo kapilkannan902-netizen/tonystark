@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = 'ubuntu@13.218.40.46 '
+        EC2_HOST = 'ubuntu@13.218.40.46'
     }
 
     options {
