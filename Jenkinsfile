@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = 'ubuntu@54.221.30.170'
+        EC2_HOST = 'ubuntu@13.218.40.46 '
     }
 
     options {
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Verify') {
             steps {
-                sh 'curl -sf http://54.221.30.170/ > /dev/null'
+                sh 'curl -sf http://13.218.40.46 / > /dev/null'
             }
         }
     }
