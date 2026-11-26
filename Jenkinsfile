@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Verify') {
             steps {
-                sh 'curl -sf http://13.218.40.46 / > /dev/null'
+                sh 'curl -sf http://13.218.40.46/ > /dev/null'
             }
         }
     }
