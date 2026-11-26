@@ -2,54 +2,40 @@ pipeline {
     agent any
 
     environment {
-        WEB_ROOT = '/var/www/html'
-        HTML_FILE = 'index.html'
-        DEPLOY_SCRIPT = './deploy-nginx.sh'
+        EC2_HOST = 'ubuntu@54.221.30.170'
+    }
+
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+        disableConcurrentBuilds()
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-                sh 'ls -la'
-            }
-        }
-
         stage('Validate') {
             steps {
-                sh '''
-                    test -f "${HTML_FILE}"
-                    grep -qi "<html" "${HTML_FILE}"
-                    chmod +x "${DEPLOY_SCRIPT}"
-                    sudo nginx -t
-                '''
+                sh 'test -f index.html'
             }
         }
-
-        stage('Deploy to Nginx') {
+        stage('Deploy to EC2') {
             steps {
-                sh """
-                    ${DEPLOY_SCRIPT} ./${HTML_FILE} ${WEB_ROOT}
-                """
+                sshagent(['ec2-ssh-key']) {
+                    sh 'scp -o StrictHostKeyChecking=no index.html $EC2_HOST:/var/www/html/index.html'
+                }
             }
         }
-
         stage('Verify') {
             steps {
-                sh '''
-                    curl -sf http://127.0.0.1/index.html | grep -q "NGINX Practice Website"
-                    systemctl is-active nginx
-                '''
+                sh 'curl -sf http://54.221.30.170/ > /dev/null'
             }
         }
     }
 
     post {
         success {
-            echo "Pipeline succeeded: ${HTML_FILE} deployed to ${WEB_ROOT}."
+            echo 'Website deployed to EC2.'
         }
         failure {
-            echo "Pipeline failed. Check console output and /var/log/nginx/error.log."
+            echo 'Deployment failed. Check the console output.'
         }
     }
 }
